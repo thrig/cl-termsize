@@ -1,0 +1,35 @@
+cl-termsize - try to obtain the terminal size via ioctl(2)
+
+INSTALLATION
+
+with Quicklisp, installation might look somthing like
+
+  cd .../where/you/put/stuff/from/github
+  git clone https://github.com/thrig/cl-termsize
+  cd ~/quicklisp/local-projects
+  ln -s .../path/to/cl-termsize
+
+
+USAGE
+
+  #-quicklisp
+  (let ((quicklisp-init (merge-pathnames "quicklisp/setup.lisp"
+                                         (user-homedir-pathname))))
+    (when (probe-file quicklisp-init)
+      (load quicklisp-init)))
+  
+  (ql:quickload :cl-termsize :silent t)
+  
+  (defpackage #:your-package-name-here (:use #:cl #:cl-termsize))
+  (in-package #:your-package-name-here)
+  
+  (multiple-value-bind (rows cols) (ioctl-termsize)
+    (format t "~&~dx~d~&" cols rows))
+
+
+ALTERNATIVES
+
+ * cl-charms has the variables charms/ll:*LINES* and charms/ll:*COLS*
+   (but requires ncurses, etc)
+ * cl-minterm shows how to query the terminal via an escape code (but
+   requires that the terminal be set to raw mode)
